@@ -1,7 +1,7 @@
 {
-    "name": "VkPlayer",
-    "version": "0.1.0",
-    "description": "Version by 27.12.13",
+    "name": "exposure",
+    "version": "1.0.0",
+    "description": "Version by 13.01.13",
     "private": true,
     "devDependencies": {
         "connect-livereload"    : ">=0.3.1",

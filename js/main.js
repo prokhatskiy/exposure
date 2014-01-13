@@ -21,16 +21,46 @@ require.config({
 });
 
 require([
-    'backbone',    
-    'models/Player',
-    'views/PlayerView'
-    ], function(Backbone, Player, PlayerView) {
-        var app = {};
-        app.player = new PlayerView();
+    'backbone', 
+    'Events',
+    'views/MessageView',
+    'views/GalleryView'    
+    ], function(Backbone, Events, MessageView, GalleryView) {
+        //Global vars
+        var app = {
+            $body : $('body'),
+            $win : $('window'),
+            loadClass : 'state__load',
+            messages : [],
+            errors : []
+        };        
 
-        app.player.update({
-            'src' : 'http://cs1-17v4.vk.me/p22/06db741176233c.mp3?extra=3Z08Te87UTtWAiW57mdlYR0f0gz7SEU1-V2pjBbsHHE2D25e-yMGo11wl4sFylUsOXKzm5qoH_2OFFT8ZIrV4q7sypotXGzO?/Flashguns - Panama.mp3',
-            'trackTitle' : 'Intro',
-            'singerTitle' : 'The XX'
+        // Global Events
+        Events.on('load:start', function() {
+            app.$body.addClass(app.loadClass);
+            console.log('[LOG] Load starting...');
         });
+        Events.on('load:end', function() {
+            app.$body.removeClass(app.loadClass);
+            console.log('[LOG] Load ended');
+        });
+        Events.on('error', function(text) {
+            app.errors.push(new MessageView({
+                text : text,
+                type : 'error'
+            }));
+            console.log('[ERROR] ' + text);
+        });
+        Events.on('message', function(text) {
+            app.errors.push(new MessageView({
+                text : text,
+                type : 'message'
+            }));
+            console.log('[MESSAGE] ' + text);
+        });
+
+        //Run!
+        app.gallery = new GalleryView();
+
+        return app;
 });

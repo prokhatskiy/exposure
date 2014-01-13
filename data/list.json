@@ -1,0 +1,34 @@
+[
+	{
+		"pages"   : 1,
+		"items"   : 5,
+		"current" : 0
+	},
+	[
+		{
+			"title" : "test",
+			"src" : "http://placehold.it/200x200",
+			"descr" : "Bla bla bla"
+		},
+		{
+			"title" : "test",
+			"src" : "http://placehold.it/200x200",
+			"descr" : "Bla bla bla"
+		},
+		{
+			"title" : "test",
+			"src" : "http://placehold.it/200x200",
+			"descr" : "Bla bla bla"
+		},
+		{
+			"title" : "test",
+			"src" : "http://placehold.it/200x200",
+			"descr" : "Bla bla bla"
+		},
+		{
+			"title" : "test",
+			"src" : "http://placehold.it/200x200",
+			"descr" : "Bla bla bla"
+		}
+	]
+]

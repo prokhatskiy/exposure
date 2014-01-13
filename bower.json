@@ -1,5 +1,5 @@
 {
-  "name": "VkPlayer",
+  "name": "Exposure",
   "version": "0.1",
 
   "authors": [
@@ -21,7 +21,7 @@
   "ignore": [
     "**/.*",
     "node_modules",
-    "bower_components",
+    "components",
     "test",
     "tests"
   ]

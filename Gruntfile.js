@@ -4,7 +4,7 @@ var LIVERELOAD_PORT = 1337,
     APP_PORT = 666,
     lrSnippet = require('connect-livereload')({port:LIVERELOAD_PORT}),
     mountFolder = function(connect, dir){
-      return connect.static(require("path").resolve(dir));
+        return connect.static(require("path").resolve(dir));
     }
 
 module.exports = function(grunt) {
@@ -12,7 +12,7 @@ module.exports = function(grunt) {
         stylus: {
             compile: {
                 files: {
-                    "css/styles.css" : ["stylus/styles.styl" ]
+                    "css/styles.css" : ["styl/styles.styl" ]
                 },
                 options: {
                     compress: false
@@ -44,7 +44,7 @@ module.exports = function(grunt) {
                 livereload: LIVERELOAD_PORT
             },
             stylus: {
-                files: ["stylus/*.styl" ],
+                files: ["styl/*.styl" ],
                 tasks: ['stylus'],
                 options: {
                     spawn: false
