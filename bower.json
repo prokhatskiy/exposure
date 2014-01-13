@@ -1,0 +1,28 @@
+{
+  "name": "VkPlayer",
+  "version": "0.1",
+
+  "authors": [
+    "Prokhatskyi Artem <Artem_Prokhatskyi@epam.com>"
+  ],
+
+  "description": "Packages for VkPlayer",
+  "main": "/",
+  "license": "MIT",
+
+  "dependencies": {
+    "underscore" : "~1.5.2",
+    "backbone" : "~1.0.0",
+    "requirejs" : "~2.1.8",
+    "jquery" : "~2.0",
+    "requirejs-text": "~2.0.5"
+  },
+
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
