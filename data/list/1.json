@@ -1,10 +1,9 @@
-[
-	{
-		"pages"   : 1,
-		"items"   : 5,
+{
+	"pages" : {
+		"length"   : 2,
 		"current" : 0
-	},
-	[
+	},	
+	"items" : [
 		{
 			"title" : "test",
 			"src" : "http://placehold.it/200x200",
@@ -30,5 +29,5 @@
 			"src" : "http://placehold.it/200x200",
 			"descr" : "Bla bla bla"
 		}
-	]
-]
+	]	
+}

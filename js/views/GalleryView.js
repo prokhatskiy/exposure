@@ -1,5 +1,5 @@
 define(['underscore', 'backbone', 'Events', 'models/GalleryModel', 'text!templates/galleryTemplate.html', 'views/GalleryItemView'], 
-	function(_, Backbone, Events, GalleryModel, GalleryCollection, galleryTemplate, GalleryItemVie) {
+	function(_, Backbone, Events, GalleryModel, galleryTemplate, GalleryItemView) {
 
 		var GalleryView = Backbone.View.extend({
 			tagName : 'section',
@@ -27,29 +27,28 @@ define(['underscore', 'backbone', 'Events', 'models/GalleryModel', 'text!templat
 			},
 
 			place : function() {
-				return this.$DOMel.append(this.render());
+				return this.$DOMel.append(this.render().$el);
 			},
 
 			load : function() {
 				this.$el.addClass(this.loadClass);
 				Events.trigger('load:start');
 				$.ajax({
-					url: '/data/list.json',
+					url: '/data/list/' + this.page + '.json',
 					dataType: 'json',
 					data: {
 						page : this.page
 					}
 				})
 				.done($.proxy(function(data) {
-					var pages = data[0].pages;
+					var pages = data.pages.length;
 
 					if (this.page >= pages || pages === 0) {
 						this.$moreBtn.hide();
 					}
-
 					if(pages === 0) return false;
-
-					this.add(data[1]);
+					this.page++;					
+					this.add(data.items);
 				}, this))
 				.fail($.proxy(function() {
 					Events.trigger('error', 'Ajax Error');
@@ -63,11 +62,15 @@ define(['underscore', 'backbone', 'Events', 'models/GalleryModel', 'text!templat
 			},
 
 			add : function(data) {
-				var item;
-
+				var item,
+				    newItems = document.createDocumentFragment();
 				for (var i = 0; i < data.length; i++) {
-					console.log(data[i]);
-				};				
+					item = new GalleryItemView({data : data[i]});
+					this.items.push(item);
+					newItems.appendChild(item.el)
+				};	
+
+				this.el.appendChild(newItems);
 			}
 		});   
 
