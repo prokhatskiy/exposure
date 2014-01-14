@@ -24,8 +24,9 @@ require([
     'backbone', 
     'Events',
     'views/MessageView',
-    'views/GalleryView'    
-    ], function(Backbone, Events, MessageView, GalleryView) {
+    'views/GalleryView',
+    'routes/Router'
+    ], function(Backbone, Events, MessageView, GalleryView, Router) {
         //Global vars
         var app = {
             $body : $('body'),
@@ -58,9 +59,14 @@ require([
             }));
             console.log('[MESSAGE] ' + text);
         });
+        // Router events
+        Events.on('gallery:open', function() {
+            app.gallery = new GalleryView();
+        });
 
         //Run!
-        app.gallery = new GalleryView();
+        app.router = new Router();
+        Backbone.history.start();
 
         return app;
 });
