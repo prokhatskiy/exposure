@@ -25,15 +25,21 @@ require([
     'Events',
     'views/MessageView',
     'views/GalleryView',
+    'views/PageView',
     'routes/Router'
-    ], function(Backbone, Events, MessageView, GalleryView, Router) {
+    ], function(Backbone, Events, MessageView, GalleryView, PageView, Router) {
         //Global vars
         var app = {
             $body : $('body'),
             $win : $('window'),
             loadClass : 'state__load',
             messages : [],
-            errors : []
+            errors : [],
+            pages : [],
+
+            setState : function(state) {
+
+            }
         };        
 
         // Global Events
@@ -59,9 +65,24 @@ require([
             }));
             console.log('[MESSAGE] ' + text);
         });
+
         // Router events
         Events.on('gallery:open', function() {
-            app.gallery = new GalleryView();
+            if(!app.gallery) {
+                app.gallery = new GalleryView();
+            }
+            app.setState('gallery');       
+        });
+        Events.on('page:open', function(id) {
+            if(app.pages[id] !== undefined) {
+                app.pages[id].show();
+            }
+            else {
+                app.pages[id] = new PageView({
+                    url : id
+                });
+            }
+            app.setState('page');
         });
 
         //Run!

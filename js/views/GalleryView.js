@@ -3,17 +3,21 @@ define(['underscore', 'backbone', 'Events', 'models/GalleryModel', 'text!templat
 
 		var GalleryView = Backbone.View.extend({
 			tagName : 'section',
-			className : 'gallery',	
+			className : 'gallery gallery_hide row',	
+			showClass : 'gallery_show',
+			hideClass : 'gallery_hide', 
 			model : new GalleryModel(),
-			tpl : _.template(galleryTemplate),
+			_tpl : _.template(galleryTemplate),
 			$DOMel : $('body'),
 			page : 1,
 			loadClass : 'gallery_load',
 			items : [],
 
+
 			initialize: function() {
 				this.place();
-				this.load();
+				this.load();	
+				this.show();		
 			},
 
 			events : {
@@ -21,13 +25,27 @@ define(['underscore', 'backbone', 'Events', 'models/GalleryModel', 'text!templat
 			},
 
 			render : function() {				
-				this.$el.html(this.tpl(this.model.toJSON()));
+				this.$el.html(this._tpl(this.model.toJSON()));
 				this.$moreBtn = this.$el.find('.gallery__more-btn');
 				return this;
 			},
 
 			place : function() {
 				return this.$DOMel.append(this.render().$el);
+			},
+
+			show : function() {
+				this.$el.removeClass(this.hideClass);
+				this.$el.addClass(this.showClass);
+
+				return this;
+			},
+
+			hide : function() {
+				this.$el.removeClass(this.showClass);
+				this.$el.addClass(this.hideClass);
+
+				return this;
 			},
 
 			load : function() {
@@ -40,7 +58,7 @@ define(['underscore', 'backbone', 'Events', 'models/GalleryModel', 'text!templat
 						page : this.page
 					}
 				})
-				.done($.proxy(function(data) {
+				.done($.proxy(function(data) {					
 					var pages = data.pages.length;
 
 					if (this.page >= pages || pages === 0) {

@@ -3,8 +3,8 @@ define(['underscore', 'backbone', 'text!templates/galleryItemTemplate.html', 'mo
 
 		var GalleryItemView = Backbone.View.extend({
 			tagName : 'article',
-			className : 'gallery__item',
-			tpl : _.template(galleryItemTemplate),
+			className : 'gallery__item span4',
+			_tpl : _.template(galleryItemTemplate),
 
 			initialize: function() {
 				this.model = new GalleryModel(this.options.data);
@@ -12,7 +12,9 @@ define(['underscore', 'backbone', 'text!templates/galleryItemTemplate.html', 'mo
 			},
 
 			render : function() {
-				this.$el.html(this.tpl(this.model.toJSON()));
+				var data = this.model.toJSON();
+				this.$el.html(this._tpl(data));
+				this.$el.addClass(data.className);
 				return this;
 			}
 		});   

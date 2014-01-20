@@ -1,9 +1,11 @@
-define(['underscore', 'backbone'], function(_, Backbone) {
+define(['backbone'], function(Backbone) {
 	return GalleryItemModel = Backbone.Model.extend({
 		defaults : {
-			"src"   : '',
-			"title" : '',
-			"descr" : ''
+			'src'       : '',
+			'href'      : '',
+			'className' : '',
+			'title'     : '',
+			'descr'     : ''
 		}
 	});       
 });

@@ -7,26 +7,36 @@
 		{
 			"title" : "test",
 			"src" : "http://placehold.it/200x200",
+			"className" : "type_1",
+			"href" : "#/page/test",
 			"descr" : "Bla bla bla"
 		},
 		{
 			"title" : "test",
 			"src" : "http://placehold.it/200x200",
+			"className" : "type_2",
+			"href" : "#/page/test",
 			"descr" : "Bla bla bla"
 		},
 		{
 			"title" : "test",
 			"src" : "http://placehold.it/200x200",
+			"className" : "type_1",
+			"href" : "#/page/test",
 			"descr" : "Bla bla bla"
 		},
 		{
 			"title" : "test",
 			"src" : "http://placehold.it/200x200",
+			"className" : "type_1",
+			"href" : "#/page/test",
 			"descr" : "Bla bla bla"
 		},
 		{
-			"title" : "test",
+			"title" : "test5",
 			"src" : "http://placehold.it/200x200",
+			"className" : "type_1",
+			"href" : "#/page/test",
 			"descr" : "Bla bla bla"
 		}
 	]	

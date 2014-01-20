@@ -1,7 +1,7 @@
 define(['underscore', 'backbone'], 
 	function(_, Backbone) {
 
-		var GalleryView = Backbone.View.extend({
+		var MessageView = Backbone.View.extend({
 			tagName : 'div',
 			className : 'message',	
 			$DOMel : $('body'),
@@ -28,6 +28,6 @@ define(['underscore', 'backbone'],
 			}
 		});   
 
-		return GalleryView;    
+		return MessageView;    
 	}
 );
