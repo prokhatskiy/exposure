@@ -31,7 +31,8 @@ define(['underscore', 'backbone', 'Events', 'models/GalleryModel', 'text!templat
 			},
 
 			addToDOM : function() {
-				return this.$DOMel.append(this.render().$el);
+				this.$DOMel.append(this.render().$el);
+				return this;
 			},
 
 			show : function() {

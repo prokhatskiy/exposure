@@ -210,3 +210,22 @@ html {
     display: block;
   }
 }
+.gallery {
+  font-size: 0;
+  position: relative;
+  padding-bottom: 50px;
+}
+.gallery__item {
+  display: inline-block;
+  vertical-align: top;
+  font-size: 16px;
+}
+.gallery__more-btn {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 50px;
+  line-height: 50px;
+  font-size: 16px;
+  text-align: center;
+}
