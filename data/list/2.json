@@ -6,35 +6,35 @@
 	"items" : [
 		{
 			"title" : "test",
-			"src" : "/photo/6.jpg",
+			"src" : "http://placehold.it/200x200",
 			"className" : "type_1",
 			"href" : "#/page/test",
 			"descr" : "Bla bla bla"
 		},
 		{
 			"title" : "test",
-			"src" : "/photo/7.jpg",
+			"src" : "http://placehold.it/200x200",
 			"className" : "type_2",
 			"href" : "#/page/test",
 			"descr" : "Bla bla bla"
 		},
 		{
 			"title" : "test",
-			"src" : "/photo/8.jpg",
+			"src" : "http://placehold.it/200x200",
 			"className" : "type_1",
 			"href" : "#/page/test",
 			"descr" : "Bla bla bla"
 		},
 		{
 			"title" : "test",
-			"src" : "/photo/9.jpg",
+			"src" : "http://placehold.it/200x200",
 			"className" : "type_1",
 			"href" : "#/page/test",
 			"descr" : "Bla bla bla"
 		},
 		{
 			"title" : "test5",
-			"src" : "/photo/10.jpg",
+			"src" : "http://placehold.it/200x200",
 			"className" : "type_1",
 			"href" : "#/page/test",
 			"descr" : "Bla bla bla"

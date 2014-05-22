@@ -3,19 +3,19 @@ define(['underscore', 'backbone', 'Events', 'models/GalleryModel', 'text!templat
 
 		var GalleryView = Backbone.View.extend({
 			tagName : 'section',
-			className : 'gallery gallery_hide',	
+			className : 'gallery gallery_hide row',	
 			showClass : 'gallery_show',
 			hideClass : 'gallery_hide', 
 			model : new GalleryModel(),
 			_tpl : _.template(galleryTemplate),
-			$DOMel : $('#content'),
+			$DOMel : $('body'),
 			page : 1,
 			loadClass : 'gallery_load',
 			items : [],
 
 
 			initialize: function() {
-				this.addToDOM();
+				this.place();
 				this.load();	
 				this.show();		
 			},
@@ -30,20 +30,20 @@ define(['underscore', 'backbone', 'Events', 'models/GalleryModel', 'text!templat
 				return this;
 			},
 
-			addToDOM : function() {
+			place : function() {
 				return this.$DOMel.append(this.render().$el);
 			},
 
 			show : function() {
-				this.$el.removeClass(this.hideClass)
-				        .addClass(this.showClass);
+				this.$el.removeClass(this.hideClass);
+				this.$el.addClass(this.showClass);
 
 				return this;
 			},
 
 			hide : function() {
-				this.$el.removeClass(this.showClass)
-				        .addClass(this.hideClass);
+				this.$el.removeClass(this.showClass);
+				this.$el.addClass(this.hideClass);
 
 				return this;
 			},
@@ -66,7 +66,7 @@ define(['underscore', 'backbone', 'Events', 'models/GalleryModel', 'text!templat
 					}
 					if(pages === 0) return false;
 					this.page++;					
-					this.addItems(data.items);
+					this.add(data.items);
 				}, this))
 				.fail($.proxy(function() {
 					Events.trigger('error', 'Ajax Error');
@@ -79,7 +79,7 @@ define(['underscore', 'backbone', 'Events', 'models/GalleryModel', 'text!templat
 				return this;		
 			},
 
-			addItems : function(data) {
+			add : function(data) {
 				var item,
 				    newItems = document.createDocumentFragment();
 				for (var i = 0; i < data.length; i++) {

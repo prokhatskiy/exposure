@@ -4,8 +4,7 @@ require.config({
         'jquery' : '../components/jquery/jquery.min',
         'underscore' : '../components/underscore/underscore-min',
         'backbone' : '../components/backbone/backbone-min',
-        'text': '../components/requirejs-text/text',
-        'imagesloaded' : '../components/imagesloaded/imagesloaded'
+        'text': '../components/requirejs-text/text'
     },
     'shim' : {
         'jquery' : {
@@ -33,32 +32,23 @@ require([
         var app = {
             $body : $('body'),
             $win : $('window'),
+            loadClass : 'state__load',
             messages : [],
             errors : [],
             pages : [],
 
             setState : function(state) {
-                this.$body.addClass('state_' + state);
-                return this;
-            },
 
-            removeState : function(state) {
-                if(!state) {
-                    this.$body.removeClass('state_' + state);
-                }
-                
-                this.$body.removeClass('state_' + state);                
-                return this;
             }
         };        
 
         // Global Events
         Events.on('load:start', function() {
-            app.setState('load');
+            app.$body.addClass(app.loadClass);
             console.log('[LOG] Load starting...');
         });
         Events.on('load:end', function() {
-            app.removeState('load');
+            app.$body.removeClass(app.loadClass);
             console.log('[LOG] Load ended');
         });
         Events.on('error', function(text) {

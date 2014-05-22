@@ -1,6 +1,6 @@
 define(['underscore', 'backbone', 'Events'], 
 	function(_, Backbone, Events) {
-		
+
 		var Router = Backbone.Router.extend({
 			defaultPath : "",			
 			routes: {
