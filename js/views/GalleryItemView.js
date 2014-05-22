@@ -3,7 +3,7 @@ define(['underscore', 'backbone', 'text!templates/galleryItemTemplate.html', 'mo
 
 		var GalleryItemView = Backbone.View.extend({
 			tagName : 'article',
-			className : 'gallery__item span4',
+			className : 'gallery__item',
 			_tpl : _.template(galleryItemTemplate),
 
 			initialize: function() {
