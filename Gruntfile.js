@@ -40,11 +40,8 @@ module.exports = function(grunt) {
             }
         },
         watch: {
-            options: {
-                livereload: LIVERELOAD_PORT
-            },
             stylus: {
-                files: ["styl/*.styl" ],
+                files: ["styl/**/*.styl" ],
                 tasks: ['stylus'],
                 options: {
                     spawn: false
@@ -73,5 +70,5 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-connect');
     grunt.loadNpmTasks('grunt-contrib-stylus');
 
-    grunt.registerTask('default', ['connect',"open:server",'watch']);
+    grunt.registerTask('default', ['connect',"open:server",'stylus', 'watch']);
 };
