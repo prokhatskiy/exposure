@@ -37,6 +37,7 @@ require([
             messages : [],
             errors : [],
             pages : [],
+            modules : [],
 
             setState : function(state) {
                 this.$body.addClass('state_' + state);
@@ -48,9 +49,24 @@ require([
                     //hardcoding is bad!
                     this.$body.removeClass('state_gallery state_page state_about'); 
                     return this;
-                }
-                
+                }                
                 this.$body.removeClass('state_' + state);                
+                return this;
+            },
+
+            initModules : function() {
+                $('[data-module]').each(function() {
+                    var $el = $(this);
+
+                    if($el.data('isActive')) {
+                        return false;
+                    }
+
+                    require(['modules/' + $el.attr('data-module')], function(Module) {
+                        app.modules.push(new Module($el));
+                        $el.data('isActive', true);
+                    });
+                });
                 return this;
             }
         };        
@@ -62,6 +78,7 @@ require([
         });
         Events.on('load:end', function() {
             app.removeState('load');
+            app.initModules();
             console.log('[LOG] Load ended');
         });
         Events.on('error', function(text) {
