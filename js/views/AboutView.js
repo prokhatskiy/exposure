@@ -9,7 +9,9 @@ define(['underscore', 'backbone', 'text!templates/aboutTemplate.html', 'Events']
 			$DOMel : $('#content'),
 
 			initialize: function() {
+				Events.trigger('load:start');
 				this.render();
+				Events.trigger('load:end');
 				return this;
 			},
 
@@ -18,19 +20,6 @@ define(['underscore', 'backbone', 'text!templates/aboutTemplate.html', 'Events']
 			render : function(data) {
 				this.$el.html(this._tmp(data));
 				this.$DOMel.append(this.$el);
-				this.show();
-				return this;
-			},
-
-			show : function() {
-				this.$el.removeClass(this.hideClass);
-				this.$el.addClass(this.showClass);
-				return this;
-			},
-
-			hide : function() {
-				this.$el.removeClass(this.showClass);
-				this.$el.addClass(this.hideClass);
 				return this;
 			}
 		});   

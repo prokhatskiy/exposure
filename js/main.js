@@ -74,12 +74,12 @@ require([
         // Global Events
         Events.on('load:start', function() {
             app.setState('load');
-            console.log('[LOG] Load starting...');
+            console.log('[LOG] Load start...');
         });
         Events.on('load:end', function() {
             app.removeState('load');
             app.initModules();
-            console.log('[LOG] Load ended');
+            console.log('[LOG] Load end');
         });
         Events.on('error', function(text) {
             app.errors.push(new MessageView({
