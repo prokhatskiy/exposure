@@ -2,10 +2,11 @@ define(['underscore', 'backbone', 'Events'],
 	function(_, Backbone, Events) {
 		
 		var Router = Backbone.Router.extend({
-			defaultPath : "",			
+			defaultPath : "/",			
 			routes: {
 				"" : "gallery",
 				"page/:id" : "page",
+				"about"  : "about",
 				"*path" : "default"
 			},
 
@@ -19,6 +20,10 @@ define(['underscore', 'backbone', 'Events'],
 
 			page : function(id) {
 				Events.trigger('page:open', id);
+			},
+
+			about : function() {
+				Events.trigger('about:open');
 			}
 		});   
 
