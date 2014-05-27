@@ -6,7 +6,7 @@ define(['underscore', 'backbone', 'models/PageModel', 'text!templates/pageTempla
 			className : 'page page_hide',	
 			showClass : 'page_show',
 			hideClass : 'page_hide',
-			$DOMel : $('body'),
+			$DOMel : $('#content'),
 			url : undefined,
 			visible : false,
 
