@@ -7,35 +7,30 @@
 		{
 			"title" : "test",
 			"src" : "/photo/6.jpg",
-			"className" : "type_1",
 			"href" : "#/page/test",
 			"descr" : "Bla bla bla"
 		},
 		{
 			"title" : "test",
 			"src" : "/photo/7.jpg",
-			"className" : "type_2",
 			"href" : "#/page/test",
 			"descr" : "Bla bla bla"
 		},
 		{
 			"title" : "test",
 			"src" : "/photo/8.jpg",
-			"className" : "type_1",
 			"href" : "#/page/test",
 			"descr" : "Bla bla bla"
 		},
 		{
 			"title" : "test",
 			"src" : "/photo/9.jpg",
-			"className" : "type_1",
 			"href" : "#/page/test",
 			"descr" : "Bla bla bla"
 		},
 		{
 			"title" : "test5",
 			"src" : "/photo/10.jpg",
-			"className" : "type_1",
 			"href" : "#/page/test",
 			"descr" : "Bla bla bla"
 		}
