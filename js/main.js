@@ -27,8 +27,9 @@ require([
     'views/MessageView',
     'views/GalleryView',
     'views/PageView',
+    'views/AboutView',
     'routes/Router'
-    ], function(Backbone, Events, MessageView, GalleryView, PageView, Router) {
+    ], function(Backbone, Events, MessageView, GalleryView, PageView, AboutView, Router) {
         //Global vars
         var app = {
             $body : $('body'),
@@ -43,8 +44,10 @@ require([
             },
 
             removeState : function(state) {
-                if(!state) {
-                    this.$body.removeClass('state_' + state);
+                if(!state || state === 'all') {
+                    //hardcoding is bad!
+                    this.$body.removeClass('state_gallery state_page state_about'); 
+                    return this;
                 }
                 
                 this.$body.removeClass('state_' + state);                
@@ -78,12 +81,15 @@ require([
 
         // Router events
         Events.on('gallery:open', function() {
+            app.removeState();
+            app.setState('gallery');  
             if(!app.gallery) {
                 app.gallery = new GalleryView();
-            }
-            app.setState('gallery');       
+            }                
         });
         Events.on('page:open', function(id) {
+            app.removeState();
+            app.setState('page');
             if(app.pages[id] !== undefined) {
                 app.pages[id].show();
             }
@@ -91,8 +97,15 @@ require([
                 app.pages[id] = new PageView({
                     url : id
                 });
-            }
-            app.setState('page');
+            }            
+        });
+
+        Events.on('about:open', function(id) {
+            app.removeState();
+            app.setState('about');  
+            if(!app.about) {
+                app.about = new AboutView();
+            }             
         });
 
         //Run!
