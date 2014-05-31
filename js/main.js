@@ -5,7 +5,8 @@ require.config({
         'underscore' : '../components/underscore/underscore-min',
         'backbone' : '../components/backbone/backbone-min',
         'text': '../components/requirejs-text/text',
-        'imagesloaded' : '../components/imagesloaded/imagesloaded'
+        'imagesloaded' : '../components/imagesloaded/imagesloaded',
+        'picturefill' : '../components/picturefill/dist/picturefill.min'
     },
     'shim' : {
         'jquery' : {

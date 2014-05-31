@@ -1,5 +1,5 @@
-define(['underscore', 'backbone', 'text!templates/galleryItemTemplate.html', 'models/GalleryModel'], 
-	function(_, Backbone, galleryItemTemplate, GalleryModel) {
+define(['underscore', 'backbone', 'picturefill', 'text!templates/galleryItemTemplate.html', 'models/GalleryModel'], 
+	function(_, Backbone, picturefill, galleryItemTemplate, GalleryModel) {
 
 		var GalleryItemView = Backbone.View.extend({
 			tagName : 'article',
