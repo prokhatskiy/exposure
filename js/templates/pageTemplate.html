@@ -4,6 +4,12 @@
 <div class="page__body">
 	<%= content %>
 </div>
-<button class="page__btn page__btn_prev">Next Page</button> 
-<button class="page__btn page__btn_next">Previous Page</button>
+<% if(nextLink) { %>
+	<a href="<%= nextLink %>" class="page__btn page__btn_prev">Next Page</a>
+<% } %>
+<% if(prevLink) { %>
+   <a href="<%= prevLink %>" class="page__btn page__btn_next">Previous Page</a>
+<% } %>
+ 
+
 
