@@ -1,5 +1,5 @@
-define(['underscore', 'backbone', 'models/PageModel', 'text!templates/pageTemplate.html', 'Events'], 
-	function(_, Backbone, PageModel, pageTemplate, Events) {
+define(['underscore', 'backbone', 'imagesloaded', 'models/PageModel', 'text!templates/pageTemplate.html', 'Events'], 
+	function(_, Backbone, imagesLoaded, PageModel, pageTemplate, Events) {
 
 		var PageView = Backbone.View.extend({
 			tagName : 'section',
@@ -54,7 +54,9 @@ define(['underscore', 'backbone', 'models/PageModel', 'text!templates/pageTempla
 					Events.trigger('error', 'Ajax Error');
 				}, this))
 				.always($.proxy(function() {
-					Events.trigger('load:end');
+					imagesLoaded(this.$el.find('img'), function() {
+						Events.trigger('load:end');
+					});					
 				}, this));		
 
 				return this;
