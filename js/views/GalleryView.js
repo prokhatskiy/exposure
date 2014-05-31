@@ -1,5 +1,5 @@
-define(['underscore', 'backbone', 'Events', 'models/GalleryModel', 'text!templates/galleryTemplate.html', 'views/GalleryItemView'], 
-	function(_, Backbone, Events, GalleryModel, galleryTemplate, GalleryItemView) {
+define(['underscore', 'backbone', 'imagesloaded', 'Events', 'models/GalleryModel', 'text!templates/galleryTemplate.html', 'views/GalleryItemView'], 
+	function(_, Backbone, imagesLoaded, Events, GalleryModel, galleryTemplate, GalleryItemView) {
 
 		var GalleryView = Backbone.View.extend({
 			tagName : 'section',
@@ -73,8 +73,10 @@ define(['underscore', 'backbone', 'Events', 'models/GalleryModel', 'text!templat
 					Events.trigger('error', 'Ajax Error');
 				}, this))
 				.always($.proxy(function() {
-					Events.trigger('load:end');
-					this.$el.removeClass(this.loadClass);
+					imagesLoaded( this.$el.find('img'), $.proxy(function() {
+						Events.trigger('load:end');
+						this.$el.removeClass(this.loadClass);
+					}, this));					
 				}, this));		
 
 				return this;		

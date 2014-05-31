@@ -238,3 +238,15 @@ html {
 .state_about .about-page {
   display: block;
 }
+.state_load {
+  position: relative;
+}
+.state_load:before {
+  content: '';
+  position: absolute;
+  z-index: 10000;
+  width: 100%;
+  height: 100%;
+  background: #fff;
+  background: rgba(255,255,255,0.5);
+}

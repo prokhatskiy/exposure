@@ -5,8 +5,7 @@ require.config({
         'underscore' : '../components/underscore/underscore-min',
         'backbone' : '../components/backbone/backbone-min',
         'text': '../components/requirejs-text/text',
-        'imagesloaded' : '../components/imagesloaded/imagesloaded',
-        'picturefill' : '../components/picturefill/dist/picturefill.min'
+        'imagesloaded' : '../components/imagesloaded/imagesloaded.pkgd.min'
     },
     'shim' : {
         'jquery' : {
@@ -55,6 +54,14 @@ require([
                 return this;
             },
 
+            beforeInit : function() {
+                this.bindEvents();
+            },
+
+            afterInit : function() {
+                this.initModules();
+            },
+
             initModules : function() {
                 $('[data-module]').each(function() {
                     var $el = $(this);
@@ -69,66 +76,83 @@ require([
                     });
                 });
                 return this;
-            }
-        };        
+            },
 
-        // Global Events
-        Events.on('load:start', function() {
-            app.setState('load');
-            console.log('[LOG] Load start...');
-        });
-        Events.on('load:end', function() {
-            app.removeState('load');
-            app.initModules();
-            console.log('[LOG] Load end');
-        });
-        Events.on('error', function(text) {
-            app.errors.push(new MessageView({
-                text : text,
-                type : 'error'
-            }));
-            console.log('[ERROR] ' + text);
-        });
-        Events.on('message', function(text) {
-            app.errors.push(new MessageView({
-                text : text,
-                type : 'message'
-            }));
-            console.log('[MESSAGE] ' + text);
-        });
-
-        // Router events
-        Events.on('gallery:open', function() {
-            app.removeState();
-            app.setState('gallery');  
-            if(!app.gallery) {
-                app.gallery = new GalleryView();
-            }                
-        });
-        Events.on('page:open', function(id) {
-            app.removeState();
-            app.setState('page');
-            if(app.pages[id] !== undefined) {
-                app.pages[id].show();
-            }
-            else {
-                app.pages[id] = new PageView({
-                    url : id
+            bindEvents : function() {
+                // Global Events
+                Events.on('load:start', function() {
+                    app.setState('load');
+                    console.log('[LOG] Load start...');
                 });
-            }            
-        });
 
-        Events.on('about:open', function(id) {
-            app.removeState();
-            app.setState('about');  
-            if(!app.about) {
-                app.about = new AboutView();
-            }             
-        });
+                Events.on('load:end', function() {
+                    setTimeout(function () {
+                        app.removeState('load');
+                        app.initModules();
+                        console.log('[LOG] Load end');
+                    }, 3000);
+                    
+                });
 
-        //Run!
-        app.router = new Router();
-        Backbone.history.start();
+                Events.on('error', function(text) {
+                    app.errors.push(new MessageView({
+                        text : text,
+                        type : 'error'
+                    }));
+                    console.log('[ERROR] ' + text);
+                });
+
+                Events.on('message', function(text) {
+                    app.errors.push(new MessageView({
+                        text : text,
+                        type : 'message'
+                    }));
+                    console.log('[MESSAGE] ' + text);
+                });
+
+                // Router events
+                Events.on('gallery:open', function() {
+                    app.removeState();
+                    app.setState('gallery');  
+                    if(!app.gallery) {
+                        app.gallery = new GalleryView();
+                    }                
+                });
+
+                Events.on('page:open', function(id) {
+                    app.removeState();
+                    app.setState('page');
+                    if(app.pages[id] !== undefined) {
+                        app.pages[id].show();
+                    }
+                    else {
+                        app.pages[id] = new PageView({
+                            url : id
+                        });
+                    }            
+                });
+
+                Events.on('about:open', function(id) {
+                    app.removeState();
+                    app.setState('about');  
+                    if(!app.about) {
+                        app.about = new AboutView();
+                    }             
+                });
+            },
+
+            initialize : function() {
+                this.beforeInit();               
+
+                //Run!
+                app.router = new Router();
+                Backbone.history.start();
+
+                this.afterInit();
+            }
+        };    
+
+        app.initialize();           
 
         return app;
 });
