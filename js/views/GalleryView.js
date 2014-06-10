@@ -4,13 +4,13 @@ define([
 	'backbone', 
 	'constants',
 	'imagesloaded',
-	'masonry', 
+	'isotope', 
 	'Events', 
 	'collections/GalleryCollection', 
 	'views/GalleryItemView',
 	'models/GalleryModel',
 	'text!templates/galleryTemplate.html'
-	], function($, _, Backbone, CONST, imagesLoaded, Masonry, Events, GalleryCollection, GalleryItemView, GalleryModel, galleryTemplate) {
+	], function($, _, Backbone, CONST, imagesLoaded, Isotope, Events, GalleryCollection, GalleryItemView, GalleryModel, galleryTemplate) {
 
 		var DEFAULTS = {
 			PATH : '/data/list/',
@@ -27,7 +27,7 @@ define([
 			$DOMel : $('#content'),
 			page : 1,
 			items : [],
-			masonry : false,
+			isotope : false,
 			isFull : false,
 
 			initialize: function() {				
@@ -84,20 +84,20 @@ define([
 				    newItems = document.createDocumentFragment();
 
 				_.each(items, function(model) {
-					var view = new GalleryItemView(model);
-					newItems.appendChild(view.el);
+					newItems.appendChild(new GalleryItemView(model).el);
 				});
 
-				this.el.appendChild(newItems);
+				this.$el.append(newItems);
+				this.buildLayout(newItems);
 			},
 
-			buildLayout : function(newItemsArr) {
-				imagesLoaded(this.$el.find('img'), $.proxy(function() {
+			buildLayout : function(newItems) {
+				imagesLoaded(this.$el.find('img'), $.proxy(function() {					
 					if(this.masonry) {
-						this.masonry.appended(newItemsArr);
+						this.isotope.appended(newItems);
 					}
 					else {
-						this.masonry = new Masonry(this.$el[0], {
+						this.isotope = new Isotope(this.$el[0], {
 							itemSelector : '.' + DEFAULTS.ITEM_CLS
 						});
 					}					

@@ -6,7 +6,7 @@ require.config({
         'backbone' : '../components/backbone/backbone-min',
         'text': '../components/requirejs-text/text',
         'imagesloaded' : '../components/imagesloaded/imagesloaded.pkgd.min',
-        'masonry' : '../components/masonry/dist/masonry.pkgd.min'
+        'isotope' : '../components/isotope/dist/isotope.pkgd.min'
     },
     'shim' : {
         'jquery' : {

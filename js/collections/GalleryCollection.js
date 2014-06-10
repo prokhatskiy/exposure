@@ -12,9 +12,8 @@ define(['jquery', 'underscore', 'backbone', 'models/GalleryItemModel', 'Events',
 		addModels : function(data) {
 			var models = [];
 			for (var i = 0, l = data.items.length; i < l; i++) {
-				models.push(new this.Model(data.items[i]));
-			};
-			this.add(models);
+				this.add(new this.Model(data.items[i]));
+			};			
 		}
 	});       
 });
