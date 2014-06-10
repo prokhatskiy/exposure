@@ -1,68 +1,64 @@
-define(['underscore', 'backbone', 'imagesloaded', 'models/PageModel', 'text!templates/pageTemplate.html', 'Events'], 
-	function(_, Backbone, imagesLoaded, PageModel, pageTemplate, Events) {
+define(['jquery', 'underscore', 'backbone', 'imagesloaded', 'models/PageModel', 'text!templates/pageTemplate.html', 'Events'], function($, _, Backbone, imagesLoaded, PageModel, pageTemplate, Events) {
+	var PageView,
 
-		var PageView = Backbone.View.extend({
-			tagName : 'section',
-			className : 'page page_hide',	
-			showClass : 'page_show',
-			hideClass : 'page_hide',
-			$DOMel : $('#content'),
-			url : undefined,
-			visible : false,
+		DEFAULTS = {
+			PATH : '/data/page/'
+		};
 
-			initialize: function() {
-				this.load(this.options.url);
-				return this;
-			},
+	return PageView = Backbone.View.extend({
+		tagName : 'section',
+		className : 'page',	
+		$DOMel : $('#content'),
+		id : undefined,
 
-			_tmp : _.template(pageTemplate),
+		initialize: function() {
+			this.load(this.options.id);
+			return this;
+		},
 
-			render : function(data) {
-				this.$el.html(this._tmp(data));
-				this.$DOMel.append(this.$el);
+		_tmp : _.template(pageTemplate),
+
+		render : function(data) {
+			this.$el.html(this._tmp(data));
+			this.$DOMel.append(this.$el);
+		},
+
+		load : function(id) {
+			Events.trigger('load:start');
+			$.ajax({
+				id: DEFAULTS.PATH + id + '.json',
+				dataType: 'json',
+				data: {
+					id : id
+				}
+			})
+			.done($.proxy(function(data) {
+				this.id = id;
+				this.afterLoad(data);
+			}, this))
+			.fail($.proxy(function() {
+				Events.trigger('error', 'Ajax Error');
+				Events.trigger('load:end');
+			}, this));		
+
+			return this;
+		},
+
+		afterLoad : function(data) {
+			this.render(data);
+			imagesLoaded(this.$el.find('img'), $.proxy(function() {
+				Events.trigger('page:hide');
 				this.show();
-			},
+				Events.trigger('load:end');
+			}, this));
+		}, 
 
-			show : function() {
-				this.$el.removeClass(this.hideClass);
-				this.$el.addClass(this.showClass);
+		show : function() {
+			this.$el.show();
+		},
 
-				return this;
-			},
-
-			hide : function() {
-				this.$el.removeClass(this.showClass);
-				this.$el.addClass(this.hideClass);
-
-				return this;
-			},
-
-			load : function(url) {
-				Events.trigger('load:start');
-				$.ajax({
-					url: '/data/page/' + url + '.json',
-					dataType: 'json',
-					data: {
-						url : url
-					}
-				})
-				.done($.proxy(function(data) {
-					this.url = url;
-					this.render(data);
-				}, this))
-				.fail($.proxy(function() {
-					Events.trigger('error', 'Ajax Error');
-				}, this))
-				.always($.proxy(function() {
-					imagesLoaded(this.$el.find('img'), function() {
-						Events.trigger('load:end');
-					});					
-				}, this));		
-
-				return this;
-			}
-		});   
-
-		return PageView;    
-	}
-);
+		hide : function() {
+			this.$el.hide();
+		}
+	});     
+});

@@ -7,32 +7,27 @@
 		{
 			"title" : "test",
 			"src" : "/photo/1.jpg",
-			"href" : "#/page/test",
-			"descr" : "Bla bla bla"
+			"href" : "#/page/test"
 		},
 		{
 			"title" : "test",
 			"src" : "/photo/2.jpg",
-			"href" : "#/page/test",
-			"descr" : "Bla bla bla"
+			"href" : "#/page/test1"
 		},
 		{
 			"title" : "test",
 			"src" : "/photo/3.jpg",
-			"href" : "#/page/test",
-			"descr" : "Bla bla bla"
+			"href" : "#/page/test"
 		},
 		{
 			"title" : "test",
 			"src" : "/photo/4.jpg",
-			"href" : "#/page/test",
-			"descr" : "Bla bla bla"
+			"href" : "#/page/test1"
 		},
 		{
 			"title" : "test",
 			"src" : "/photo/5.jpg",
-			"href" : "#/page/test",
-			"descr" : "Bla bla bla"
+			"href" : "#/page/test"
 		}
 	]	
 }

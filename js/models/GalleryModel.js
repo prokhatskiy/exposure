@@ -1,3 +1,5 @@
 define(['underscore', 'backbone'], function(_, Backbone) {
-	return GalleryModel = Backbone.Model.extend();       
+	var GalleryItemModel;
+
+	return GalleryItemModel = Backbone.Model;       
 });

@@ -1,5 +1,20 @@
-define(['underscore', 'backbone', 'models/GalleryItemModel'], function(_, Backbone, GalleryItemModel) {
+define(['jquery', 'underscore', 'backbone', 'models/GalleryItemModel', 'Events', 'constants'], function($, _, Backbone, GalleryItemModel, Events, CONST) {
+	var GalleryCollection;
+	
 	return GalleryCollection = Backbone.Collection.extend({
-		model : GalleryItemModel
+		Model : GalleryItemModel,
+		initialize : function() {
+			this.bindEvents();
+		},
+		bindEvents : function() {
+			Events.on(CONST.EVENTS.LOADED_GALLERY_ITEMS, $.proxy(this.addModels, this));
+		},
+		addModels : function(data) {
+			var models = [];
+			for (var i = 0, l = data.items.length; i < l; i++) {
+				models.push(new this.Model(data.items[i]));
+			};
+			this.add(models);
+		}
 	});       
 });

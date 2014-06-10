@@ -1,32 +1,29 @@
-define(['underscore', 'backbone', 'Events'], 
-	function(_, Backbone, Events) {
-		
-		var Router = Backbone.Router.extend({
-			defaultPath : "/",			
-			routes: {
-				"" : "gallery",
-				"page/:id" : "page",
-				"about"  : "about",
-				"*path" : "default"
-			},
+define(['underscore', 'backbone', 'Events'], function(_, Backbone, Events) {
+	var Router;
 
-			default : function() { 
-				document.location.hash = this.defaultPath;
-			},
+	return Router = Backbone.Router.extend({
+		defaultPath : "/",		
+		routes: {
+			"" : "gallery",
+			"page/:id" : "page",
+			"about"  : "about",
+			"*path" : "default"
+		},
 
-			gallery : function() {				
-				Events.trigger('gallery:open');
-			},
+		default : function() { 
+			document.location.hash = this.defaultPath;
+		},
 
-			page : function(id) {
-				Events.trigger('page:open', id);
-			},
+		gallery : function() {				
+			Events.trigger('gallery:open');
+		},
 
-			about : function() {
-				Events.trigger('about:open');
-			}
-		});   
+		page : function(id) {
+			Events.trigger('page:open', id);
+		},
 
-		return Router;       
-	}
-);
+		about : function() {
+			Events.trigger('about:open');
+		}
+	});       
+});

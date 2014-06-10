@@ -18,7 +18,7 @@
     "requirejs-text": "~2.0.5",
     "bootstrap-css" : "~2.3.2",
     "imagesloaded" : "~3.1.5",
-    "picturefill" : "~2.0.0"
+    "masonry" : "~3.1.5"
   },
 
   "ignore": [

@@ -1,97 +1,107 @@
-define(['underscore', 'backbone', 'imagesloaded', 'Events', 'models/GalleryModel', 'text!templates/galleryTemplate.html', 'views/GalleryItemView'], 
-	function(_, Backbone, imagesLoaded, Events, GalleryModel, galleryTemplate, GalleryItemView) {
+define([
+	'jquery',
+	'underscore', 
+	'backbone', 
+	'constants',
+	'imagesloaded',
+	'masonry', 
+	'Events', 
+	'collections/GalleryCollection', 
+	'views/GalleryItemView',
+	'models/GalleryModel',
+	'text!templates/galleryTemplate.html'
+	], function($, _, Backbone, CONST, imagesLoaded, Masonry, Events, GalleryCollection, GalleryItemView, GalleryModel, galleryTemplate) {
+
+		var DEFAULTS = {
+			PATH : '/data/list/',
+			ITEM_CLS : 'gallery__item',
+			MORE_BTN_CLS : '.gallery__more-btn'
+		}
 
 		var GalleryView = Backbone.View.extend({
 			tagName : 'section',
-			className : 'gallery gallery_hide',	
-			showClass : 'gallery_show',
-			hideClass : 'gallery_hide', 
+			className : 'gallery',
 			model : new GalleryModel(),
+			collection : new GalleryCollection(),	
 			_tpl : _.template(galleryTemplate),
 			$DOMel : $('#content'),
 			page : 1,
-			loadClass : 'gallery_load',
 			items : [],
+			masonry : false,
+			isFull : false,
 
-
-			initialize: function() {
-				this.addToDOM();
-				this.load();	
-				this.show();		
+			initialize: function() {				
+				this.render();
+				this.bindEvents();
+				this.getData();			
 			},
 
-			events : {
-				'click .gallery__more-btn' : 'load'
+			bindEvents : function() {
+				this.$el.on('click', DEFAULTS.MORE_BTN_CLS, $.proxy(this.getData, this));
+				this.collection.on('add', $.proxy(this.addItems, this));
 			},
 
 			render : function() {				
-				this.$el.html(this._tpl(this.model.toJSON()));
-				this.$moreBtn = this.$el.find('.gallery__more-btn');
-				return this;
-			},
-
-			addToDOM : function() {
-				this.$DOMel.append(this.render().$el);
-				return this;
-			},
-
-			show : function() {
-				this.$el.removeClass(this.hideClass)
-				        .addClass(this.showClass);
+				this.$el.html(this._tpl(this.model));
+				this.$DOMel.append(this.$el);
 
 				return this;
 			},
 
-			hide : function() {
-				this.$el.removeClass(this.showClass)
-				        .addClass(this.hideClass);
+			getData : function() {
+				if(this.isFull) return false;
 
-				return this;
-			},
+				this.$el.addClass(DEFAULTS.LOAD_CLS);
+				Events.trigger(CONST.EVENTS.LOAD_START);
 
-			load : function() {
-				this.$el.addClass(this.loadClass);
-				Events.trigger('load:start');
 				$.ajax({
-					url: '/data/list/' + this.page + '.json',
+					url: DEFAULTS.PATH + this.page + '.json',
 					dataType: 'json',
 					data: {
 						page : this.page
 					}
 				})
-				.done($.proxy(function(data) {					
-					var pages = data.pages.length;
+				.done($.proxy(function(data) {	
+					this.page++;
+					Events.trigger(CONST.EVENTS.LOAD_END);
+					Events.trigger(CONST.EVENTS.LOADED_GALLERY_ITEMS, data);
 
-					if (this.page >= pages || pages === 0) {
-						this.$moreBtn.hide();
+					if(data.pages.current === data.pages.length-1) {
+						this.$el.find(DEFAULTS.MORE_BTN_CLS).hide();
+						this.isFull = true;
 					}
-					if(pages === 0) return false;
-					this.page++;					
-					this.addItems(data.items);
 				}, this))
 				.fail($.proxy(function() {
-					Events.trigger('error', 'Ajax Error');
-				}, this))
-				.always($.proxy(function() {
-					imagesLoaded( this.$el.find('img'), $.proxy(function() {
-						Events.trigger('load:end');
-						this.$el.removeClass(this.loadClass);
-					}, this));					
-				}, this));		
+					Events.trigger(CONST.EVENTS.LOAD_END);
+					Events.trigger(CONST.EVENTS.ERROR, 'Ajax Error');
+				}, this));	
 
 				return this;		
 			},
 
-			addItems : function(data) {
-				var item,
+			addItems : function() {
+				var items = this.collection.where({ 'isRendered' : false }),
 				    newItems = document.createDocumentFragment();
-				for (var i = 0; i < data.length; i++) {
-					item = new GalleryItemView({data : data[i]});
-					this.items.push(item);
-					newItems.appendChild(item.el)
-				};	
+
+				_.each(items, function(model) {
+					var view = new GalleryItemView(model);
+					newItems.appendChild(view.el);
+				});
 
 				this.el.appendChild(newItems);
+			},
+
+			buildLayout : function(newItemsArr) {
+				imagesLoaded(this.$el.find('img'), $.proxy(function() {
+					if(this.masonry) {
+						this.masonry.appended(newItemsArr);
+					}
+					else {
+						this.masonry = new Masonry(this.$el[0], {
+							itemSelector : '.' + DEFAULTS.ITEM_CLS
+						});
+					}					
+				}, this));
 			}
 		});   
 

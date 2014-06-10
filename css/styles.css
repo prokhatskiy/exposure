@@ -178,6 +178,10 @@ td,
 th {
   padding: 0;
 }
+@font-face {
+  font-family: 'NewRailAlphabet-Bold';
+  src: url("../fonts/NewRailAlphabet-Bold.eot?") format('eot'), url("../fonts/NewRailAlphabet-Bold.otf") format('opentype'), url("../fonts/NewRailAlphabet-Bold.woff") format('woff'), url("../fonts/NewRailAlphabet-Bold.ttf") format('truetype'), url("../fonts/NewRailAlphabet-Bold.svg#NewRailAlphabet-Bold") format('svg');
+}
 ::-webkit-scrollbar-thumb:vertical {
   width: 8px;
   background: #222;
@@ -204,11 +208,14 @@ body {
 }
 html {
   border: 8px solid #222;
+  overflow-y: scroll;
 }
 .gallery {
   font-size: 0;
   position: relative;
-  padding-bottom: 50px;
+  padding-bottom: 100px;
+  margin-bottom: 100px;
+  overflow: hidden;
 }
 .gallery__item {
   display: inline-block;
@@ -218,11 +225,24 @@ html {
 .gallery__more-btn {
   position: absolute;
   bottom: 0;
-  width: 100%;
+  font-family: "New Rail Alphabet Bold", Arial, serif;
+  width: 50px;
   height: 50px;
+  font-size: 48px;
+  color: #222;
   line-height: 50px;
-  font-size: 16px;
+  background: none;
+  border: 0;
+  left: 50%;
+  margin-left: -25px;
   text-align: center;
+  outline: 0;
+}
+.gallery_no-more .gallery__more-btn {
+  display: none;
+}
+.gallery_no-more {
+  padding-bottom: 0;
 }
 .gallery,
 .about-page,
@@ -232,11 +252,17 @@ html {
 .state_gallery .gallery {
   display: block;
 }
+.state_gallery .logo {
+  cursor: default;
+}
 .state_page .page {
   display: block;
 }
 .state_about .about-page {
   display: block;
+}
+.state_about .about-link {
+  display: none;
 }
 .state_load {
   position: relative;
@@ -248,5 +274,23 @@ html {
   width: 100%;
   height: 100%;
   background: #fff;
-  background: rgba(255,255,255,0.5);
+  background: rgba(255,255,255,0.3);
+}
+.logo {
+  font-family: "New Rail Alphabet Bold", Arial, serif;
+  font-size: 65px;
+  line-height: 70px;
+  height: 70px;
+  width: 288px;
+  margin: 100px auto;
+  text-align: center;
+  color: #222;
+  text-decoration: none;
+  display: block;
+  text-transform: lowercase;
+}
+.back-to-top-btn {
+  position: fixed;
+  left: 0;
+  top: 50%;
 }
