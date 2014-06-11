@@ -10,7 +10,6 @@ define([
     'views/AboutView',
     'routes/Router'
     ], function($, _, Backbone, CONST, Events, MessageView, GalleryView, PageView, AboutView, Router) {
-        //Global vars
 
         var App = function() {
             var _this = (this instanceof App) ? 
@@ -110,15 +109,7 @@ define([
 
                     if(!_this.gallery) {
                         _this.gallery = new GalleryView();
-                    } 
-
-                    if(_this.galleryScroll > 0) {
-                        _this.$win.scrollTop(_this.galleryScroll);
-                    }               
-                });
-
-                Events.on(CONST.EVENTS.GALLER_CLOSE, function() {
-                    _this.galleryScroll = _this.$win.scrollTop();
+                    }             
                 });
 
                 Events.on(CONST.EVENTS.PAGE_OPEN, function(id) {
@@ -135,11 +126,6 @@ define([
                     }            
                 });
 
-                Events.on(CONST.EVENTS.PAGE_CLOSE, function() {
-                    _.each(_this.pages, function(page) {
-                        page.hide();
-                    });
-                });
 
                 Events.on(CONST.EVENTS.ABOUT_OPEN, function(id) {
                     Events.trigger('page:close');
@@ -151,10 +137,6 @@ define([
                     else {
                         _this.about.show();
                     }         
-                });
-
-                Events.on(CONST.EVENTS.ABOUT_CLOSE, function(id) {
-                            
                 });
             }
         });
