@@ -1,51 +1,31 @@
 'use strict';
 
-var LIVERELOAD_PORT = 1337,
-    APP_PORT = 666,
-    lrSnippet = require('connect-livereload')({port:LIVERELOAD_PORT}),
-    mountFolder = function(connect, dir){
-        return connect.static(require("path").resolve(dir));
-    }
+var APP_PORT = 3000;
+var path = require('path');
 
 module.exports = function(grunt) {
     grunt.initConfig({
         stylus: {
             compile: {
                 files: {
-                    "css/styles.css" : ["styl/styles.styl" ]
+                    'public/css/styles.css' : ['public/styl/styles.styl' ]
                 },
                 options: {
                     compress: false
                 }
             }
         },
-        connect: {
-            options: {
-                port: APP_PORT
-            },
-            livereload: {
-                options: {
-                    middleware: function (connect) {
-                        return [
-                            lrSnippet,
-                            mountFolder(connect, '')
-                        ];
-                    }
-                }
-            }
-        },
-        open: {
-            server: {
-                path: "http://localhost:" + APP_PORT
-            }
-        },
         watch: {
             stylus: {
-                files: ["styl/**/*.styl" ],
-                tasks: ['stylus'],
+                files: ['public/styl/**/*.styl'],
+                tasks: ['stylus', 'autoprefixer:css'],
                 options: {
                     spawn: false
                 }
+            },
+            server : {
+                files: ['bin/*', 'routes/*.js', 'views/**', '*.js'],
+                tasks: ['stopServer', 'startServer'],
             }
         },
         autoprefixer: {
@@ -55,20 +35,42 @@ module.exports = function(grunt) {
             css: {
                 expand: true,
                 flatten: true,
-                src: 'css/*.css',
-                dest: 'css/'
+                src: 'public/css/*.css',
+                dest: 'public/css/'
             }
         },
         clean: {
-            css: ["css/_*.css"],
+            css: ['public/css/_*.css'],
+        },
+        express: {
+            options: {
+                port: APP_PORT,
+                hostname: '*'
+            },
+            livereload: {
+                options: {
+                    server: path.resolve('./app.js'),
+                    livereload: true,
+                    serverreload: true,
+                    bases: [path.resolve('./public')]
+                }
+            }
+        },
+        open : {
+            dev : {
+                path : 'http://localhost:' + APP_PORT
+            }
         }
     });
 
     grunt.loadNpmTasks('grunt-open');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-autoprefixer');
-    grunt.loadNpmTasks('grunt-contrib-connect');
     grunt.loadNpmTasks('grunt-contrib-stylus');
+    grunt.loadNpmTasks('grunt-express');
 
-    grunt.registerTask('default', ['connect',"open:server",'stylus', 'watch']);
+    grunt.registerTask('styles', ['stylus', 'autoprefixer:css', 'watch:stylus']);
+    grunt.registerTask('server', ['express']);
+
+
 };

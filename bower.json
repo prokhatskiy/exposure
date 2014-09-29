@@ -6,7 +6,7 @@
     "Prokhatskyi Artem <Artem_Prokhatskyi@epam.com>"
   ],
 
-  "description": "Packages for VkPlayer",
+  "description": "Packages for Exposure",
   "main": "/",
   "license": "MIT",
 
@@ -15,16 +15,14 @@
     "backbone" : "~1.0.0",
     "requirejs" : "~2.1.8",
     "jquery" : "~2.0",
-    "requirejs-text": "~2.0.5",
-    "bootstrap-css" : "~2.3.2",
-    "imagesloaded" : "~3.1.5",
-    "isotope" : "~2.0.0"
+    "requirejs-text": "~2.0.5"
   },
 
   "ignore": [
     "**/.*",
+    ".idea",
     "node_modules",
-    "components",
+    "public/components",
     "test",
     "tests"
   ]

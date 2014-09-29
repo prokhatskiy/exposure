@@ -1,7 +1,6 @@
 .sass-cache
 node_modules
-components
-design
+public/components
 .idea
 *.sublime-project
 *.sublime-workspace
