@@ -1,7 +1,7 @@
 define([], function() {
-	var CONST;
+   var CONST = {
+       loadClass : 'loading'
+   }
 
-	return CONST = {
-
-    }
+   return CONST;
 });

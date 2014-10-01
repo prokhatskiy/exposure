@@ -19,6 +19,7 @@
     "grunt-contrib-watch"   : ">=0.4.4",
     "grunt-contrib-clean"   : ">=0.4.0",
     "grunt-express"  : ">=1.0.0",
+    "grunt-shell"  : ">=1.1.1",
     "grunt": ">=0.4.1"
   }
 }

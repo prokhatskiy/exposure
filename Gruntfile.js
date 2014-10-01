@@ -24,7 +24,7 @@ module.exports = function(grunt) {
                 }
             },
             server : {
-                files: ['bin/*', 'routes/*.js', 'views/**', '*.js'],
+                files: ['bin/*', 'router/*.js', 'views/**', '*.js'],
                 tasks: ['stopServer', 'startServer'],
             }
         },
@@ -68,9 +68,9 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-autoprefixer');
     grunt.loadNpmTasks('grunt-contrib-stylus');
     grunt.loadNpmTasks('grunt-express');
+    grunt.loadNpmTasks('grunt-shell');
 
-    grunt.registerTask('styles', ['stylus', 'autoprefixer:css', 'watch:stylus']);
+    grunt.registerTask('styles', ['open:dev', 'stylus', 'autoprefixer:css', 'watch:stylus']);
     grunt.registerTask('server', ['express']);
-
 
 };
