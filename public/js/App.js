@@ -5,6 +5,7 @@ define(['backbone',
         'Events',
         'constants',
         'view/GalleryView'], function(Backbone, _, $, Router, Events, CONST, GalleryView) {
+
     function App() {
         this.$body = $(document.body);
         this.$win = $(window);

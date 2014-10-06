@@ -1,10 +1,10 @@
 require.config({
-    'baseUrl' : 'javascripts',
+    'baseUrl' : 'js',
     'paths' : {
-        'jquery' : '../components/jquery/jquery.min',
-        'underscore' : '../components/underscore/underscore-min',
-        'backbone' : '../components/backbone/backbone',
-        'text': '../components/requirejs-text/text'
+        'jquery' : 'lib/jquery/jquery',
+        'underscore' : 'lib/underscore/underscore',
+        'backbone' : 'lib/backbone/backbone',
+        'text': 'lib/requirejs-text/text'
     },
     'shim' : {
         'jquery' : {

@@ -60,6 +60,20 @@ module.exports = function(grunt) {
             dev : {
                 path : 'http://localhost:' + APP_PORT
             }
+        },
+        copy : {
+            lib : {
+                files : [{
+                    expand: true,
+                    cwd : 'public/components/',
+                    src: ['jquery/jquery.js',
+                          'requirejs/require.js',
+                          'underscore/underscore.js',
+                          'backbone/backbone.js',
+                          'requirejs-text/text.js'],
+                    dest : 'public/js/lib/'
+                }]
+            }
         }
     });
 
@@ -69,6 +83,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-stylus');
     grunt.loadNpmTasks('grunt-express');
     grunt.loadNpmTasks('grunt-shell');
+    grunt.loadNpmTasks('grunt-contrib-copy');
 
     grunt.registerTask('styles', ['open:dev', 'stylus', 'autoprefixer:css', 'watch:stylus']);
     grunt.registerTask('server', ['express']);
