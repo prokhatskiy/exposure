@@ -1,27 +1,31 @@
-define(['jquery', 'underscore', 'backbone', 'models/GalleryItemModel', 'Events', function($, _, Backbone, GalleryItemModel, Events) {
+define(['jquery',
+        'underscore',
+        'backbone',
+        'helper',
+        'Events',
+        'router/Url',
+        'model/GalleryItemModel'], function($, _, Backbone, helper, Events, URL, GalleryItemModel) {
+
 	var GalleryCollection = Backbone.Collection.extend({
-        url: '/gallery',
+        url: URL.gallery,
         model: GalleryItemModel,
-        page: 0,
+        page: 1,
 		Model : GalleryItemModel,
-		initialize : function() {
-			this.update(0);
-		},
-        update: function(page) {
-            var page = page || this.page++;
 
-            Events.trigger('load:start');
+        initialize: function() {
+            Events.on('gallery:update', this.update.bind(this));
+        },
 
-            $.get( this.url + '/' + page, function(data) {
+        update: function() {
+            var page = this.page++;
+
+            helper.getCachedData(this.url + '/' + page + '.json', function(data){
                 this.add(data);
-            }.bind(this), 'application/json')
-                .fail(function(xhr, ajaxOptions, thrownError) {
-                    Events.trigger('error', thrownError)
-                })
-                .always(function() {
-                    Events.trigger('load:end');
-                });
+            }, this);
+
+            return this;
         }
+
 	});
 
     return GalleryCollection;

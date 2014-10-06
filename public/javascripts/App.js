@@ -1,4 +1,10 @@
-define(['backbone', 'underscore', 'jquery', 'router/Router', 'Events', 'constants'], function(Backbone, _, $, Router, Events, CONST) {
+define(['backbone',
+        'underscore',
+        'jquery',
+        'router/Router',
+        'Events',
+        'constants',
+        'view/GalleryView'], function(Backbone, _, $, Router, Events, CONST, GalleryView) {
     function App() {
         this.$body = $(document.body);
         this.$win = $(window);
@@ -29,8 +35,15 @@ define(['backbone', 'underscore', 'jquery', 'router/Router', 'Events', 'constant
 
 
     App.prototype.initialize = function initialize() {
+        if(this.support.localStorage) {
+            if(window.lastUpdateTime && localStorage.getItem('cacheTime')) {
+                if (window.lastUpdateTime > localStorage.getItem('cacheTime')) {
+                    localStorage.clear();
+                }
+            }
+        }
+
         this.router = new Router();
-        Backbone.history.start();
     };
 
     App.prototype.bindEvents = function bindEvents() {
@@ -40,6 +53,15 @@ define(['backbone', 'underscore', 'jquery', 'router/Router', 'Events', 'constant
 
         Events.on('load:end', function() {
             this.$body.removeClass(CONST.loadClass);
+        }.bind(this));
+
+        Events.on('gallery', function() {
+            if(this['gallery'] === undefined) {
+                this.gallery = new GalleryView();
+            }
+            else {
+                this.gallery.show();
+            }
         }.bind(this));
     };
 

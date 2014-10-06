@@ -1,4 +1,4 @@
-define(['underscore', 'backbone', 'Events', 'App', 'view/GalleryView'], function(_, Backbone, Events, App, GalleryView) {
+define(['underscore', 'backbone', 'Events'], function(_, Backbone, Events) {
 	var Router;
 
 	return Router = Backbone.Router.extend({
@@ -14,20 +14,11 @@ define(['underscore', 'backbone', 'Events', 'App', 'view/GalleryView'], function
 		},
 
         gallery: function() {
-            if(App.gallery !== undefined) {
-                App.gallery.show();
-            }
-            else {
-                App.gallery = new GalleryView();
-            }
+            Events.trigger('gallery');
         },
 
         openPage: function() {
-            if(App.gallery !== undefined) {
-                App.gallery.hide();
-            }
 
-            console.log(123);
         }
 	});       
 });

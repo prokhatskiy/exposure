@@ -1,47 +1,42 @@
 define(['underscore',
         'backbone',
         'jquery',
-        'model/GalleryModel',
+        'Events',
         'collection/GalleryCollection',
-        'view/ItemView',
-        'text!template/galleryTemplate'], function(_, Backbone, $, GalleryCollection, ItemView, galleryTemplate) {
+        'view/GalleryItemView',
+        'text!template/galleryTemplate.html'], function(_, Backbone, $, Events, GalleryCollection, ItemView, galleryTemplate) {
 
     var GalleryView = Backbone.View.extend({
         el: document.getElementById('gallery'),
         template: _.template(galleryTemplate),
-        model : new GalleryModel(),
-        Collection : GalleryCollection,
+        collection : new GalleryCollection(),
         ItemView : ItemView,
 
         initialize : function() {
-            this.collection = new this.Collection();
+            this.render();
             this.collection.on('add', this.renderNewItems.bind(this));
-            this.$el.on('click', '.gallery__more-link', this.collection.loadMore().bind(this.collection));
+            this.$el.on('click', '.gallery__more-btn', this.update.bind(this.collection));
+
+            this.update();
 
             return this;
         },
 
         render: function() {
-            this.$el.append(this.template(this.model.toJSON()));
+            this.$el.append(this.template({}));
+            return this;
+        },
+
+        renderNewItems: function(model) {
+            var item = new ItemView({ model : model });
+
+            this.$el.append(item.$el);
 
             return this;
         },
 
-        renderNewItem: function(models) {
-            var elems = document.createDocumentFragment();
-
-            _.each(models, function(model) {
-                var item = new ItemView({ model : model });
-                elems.appendChild(item.el);
-            });
-
-            this.$el.append(elems);
-
-            return this;
-        },
-
-        loadMore: function() {
-            this.collection.loadMore();
+        update: function() {
+            Events.trigger('gallery:update');
         },
 
         hide : function() {
