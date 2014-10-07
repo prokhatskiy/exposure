@@ -1,7 +1,15 @@
 define([], function() {
-   var CONST = {
-       loadClass : 'loading'
-   }
+    var CONST = {
+        SELECTORS : {
+            LOAD_CLS : 'loading'
+        },
 
-   return CONST;
+        EVENTS : {
+            LOADING_START : 'loading:end',
+            LOADING_END : 'loading:start',
+            GALLERY_OPEN : 'gallery'
+        }
+    }
+
+    return CONST;
 });

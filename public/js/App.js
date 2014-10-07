@@ -49,11 +49,11 @@ define(['backbone',
 
     App.prototype.bindEvents = function bindEvents() {
         Events.on('load:start', function() {
-            this.$body.addClass(CONST.loadClass);
+            this.$body.addClass(CONST.SELECTORS.LOAD_CLS);
         }.bind(this));
 
         Events.on('load:end', function() {
-            this.$body.removeClass(CONST.loadClass);
+            this.$body.removeClass(CONST.SELECTORS.LOAD_CLS);
         }.bind(this));
 
         Events.on('gallery', function() {

@@ -1,6 +1,6 @@
 define([], function() {
     var URL = {
-        gallery : '/service/gallery'
+        gallery : '/services/gallery'
     };
 
     return URL;
