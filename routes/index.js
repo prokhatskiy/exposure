@@ -1,29 +1,29 @@
 var express = require('express');
 var config = require('../config.js');
+var gallery = require('../services/gallery.js');
+var deploy = require('../services/deploy.js');
 
 var router = express.Router();
 
 /* GET home page. */
-router.get('/', function(req, res) {
+router.get(config.ROUTES.INDEX, function(req, res) {
+    res.cookie('FLICKR_ACCESS_TOKEN', config.FLICKR.ACCESS_TOKEN, { maxAge: 900000, httpOnly: true });
+    res.cookie('FLICKR_TOKEN_SECRET', config.FLICKR.ACCESS_TOKEN_SECRET, { maxAge: 900000, httpOnly: true });
 
-  res.render('index', {
-      title: config.title,
+    res.render('index', {
+      title: config.TITLE,
       lastUpdateTime: new Date().getTime()
-  });
-
+    });
 });
 
 //REST API
-router.get('/services/gallery/*', function(req, res) {
-    var page = req.params[0];
+//router.get(config.ROUTES.GALLERY_API, function(req, res) {
+//    res.send(gallery.get(req.params[0]));
+//});
 
-    res.send([{
-        "src"        : "1",
-        "href"       : "2",
-        "className"  : "3",
-        "title"      : "4",
-        "descr"      : "5"
-    }]);
+router.get(config.ROUTES.DEPLOY_API, function(req, res) {
+    var json = deploy.init(res);
+    //res.redirect(config.ROUTES.INDEX);
 });
 
 
