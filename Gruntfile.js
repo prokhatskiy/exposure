@@ -50,7 +50,7 @@ module.exports = function(grunt) {
             livereload: {
                 options: {
                     server: path.resolve('./app.js'),
-                    livereload: true,
+                    livereload: false,
                     serverreload: true,
                     bases: [path.resolve('./public')]
                 }

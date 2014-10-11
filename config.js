@@ -2,6 +2,9 @@ module.exports = function() {
     return {
         TITLE : 'Exposure',
 
+        CREATE_JSON_FILE : false,
+        SAVE_TO_DB : true,
+
         ROUTES : {
             INDEX : '/',
             GALLERY_API : '/services/gallery/*',
@@ -9,7 +12,9 @@ module.exports = function() {
         },
 
         DB : {
-            SERVER : 'ds043210.mongolab.com:43210/exposure',
+            SERVER : 'ds043210.mongolab.com:43210',
+            NAME : 'exposure',
+            PARAMS : '?replicaSet=rs-ds043210',
             USER : 'prokhatskyi',
             PASSWORD : 'Hf556Cfds099der'
         },

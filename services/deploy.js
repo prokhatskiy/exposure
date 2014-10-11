@@ -3,6 +3,7 @@ var config = require('../config.js');
 var fs = require('fs');
 var wrench = require('wrench');
 var _ = require('lodash');
+var Db = require('../db.js');
 
 var flickrOptions = {
         api_key: config.FLICKR.KEY,
@@ -14,18 +15,24 @@ var flickrData = {};
 
 var deploy = {
     init : function(res) {
-        var _this = this,
-            pathGallery = config.GALLERY.FOLDER_PATH + '/' + config.GALLERY.FOLDER_NAME;
+        var pathGallery = config.GALLERY.FOLDER_PATH + '/' + config.GALLERY.FOLDER_NAME;
 
         wrench.mkdirSyncRecursive(pathGallery);
 
         Flickr.tokenOnly(flickrOptions, function(error, flickr) {
-            _this.fetchDataFromFlickr(flickr, function() {
-                _this.saveGalleryList();
-                //_this.saveGaleryPages();
+            this.fetchDataFromFlickr(flickr, function() {
+                if(config.CREATE_JSON_FILE) {
+                    this.saveGalleryList();
+                    //_this.saveGaleryPages();
+                }
+
+                if(config.SAVE_TO_DB) {
+                    this.updateDb();
+                }
+
                 res.send(flickrData);
-            });
-        });
+            }.bind(this));
+        }.bind(this));
     },
 
     flickErrorHandler : function(error) {
@@ -35,7 +42,7 @@ var deploy = {
     fetchDataFromFlickr :function(flickr, callback) {
         this.fetchGalleries(flickr, function() {
             this.fetchGalleryPages(flickr, function() {
-                this.fetchPhotoSizes(flickr, callback);
+                this.fetchPhotos(flickr, callback);
             }.bind(this));
         }.bind(this));
     },
@@ -81,35 +88,15 @@ var deploy = {
         }
     },
 
-    fetchPhotoSizes : function(flickr, callback) {
+    fetchPhotos : function(flickr, callback) {
         flickrData.allPhotos = [];
-        flickrData.photoSizes = [];
 
         flickrData.photosetPages.forEach(function(photoset) {
             flickrData.allPhotos = _.union(flickrData.allPhotos, photoset.photo);
         });
 
-        if(flickrData.allPhotos.length > 0) {
-            getPhotoSize(flickrData.allPhotos[0]['id']);
-            var i = 0;
-        }
-
-        function getPhotoSize(photoId) {
-            flickr.photos.getSizes({
-                photo_id : photoId,
-                format : 'json'
-            }, function(err, result) {
-                flickrData.photoSizes.push(result.sizes.size);
-                i++;
-                if(i < flickrData.allPhotos.length) {
-                    getPhotoSize(flickrData.allPhotos[i]['id']);
-                }
-                else {
-                    if(typeof callback === 'function') {
-                        callback();
-                    }
-                }
-            });
+        if(typeof callback === 'function') {
+            callback();
         }
     },
 
@@ -143,6 +130,7 @@ var deploy = {
 
     mapGalleryItemData : function(flickrObj) {
         return {
+            type : 'galleryItem',
             id : flickrObj.id,
             src : this.getPrimaryPhotos(flickrObj.id),
             photos : flickrObj.photos,
@@ -166,6 +154,23 @@ var deploy = {
         //https://www.flickr.com/services/api/misc.urls.html
         var photoObj = _.where(flickrData.allPhotos, { 'id' : photoId })[0];
         return 'https://farm' + photoObj.farm + '.staticflickr.com/' + photoObj.server + '/' + photoObj.id + '_' + photoObj.secret + '_' + size + '.jpg'
+    },
+
+    updateDb : function() {
+        var mongoDB = new Db();
+        var galleryJson = [];
+
+        for(var i = 0; i < flickrData.photosets.length; i++) {
+            galleryJson.push(this.mapGalleryItemData(flickrData.photosets[i]));
+        }
+
+        mongoDB.connect(function(db) {
+            mongoDB.saveGallery(galleryJson, db, function() {
+                mongoDB.setLastUpdateDate(db, function() {
+                    db.close();
+                });
+            });
+        });
     }
 }
 
