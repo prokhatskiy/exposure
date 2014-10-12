@@ -44,4 +44,39 @@ Db.prototype.saveGalleryPages = function(data, db, callback) {
     });
 };
 
+Db.prototype.getGalleryPages = function(page, callback) {
+    this.connect(function(db) {
+        var collection = db.collection('gallery');
+
+        collection.find(
+            {
+                'type' : 'galleryItem'
+            },
+            {
+                limit : config.GALLERY.ITEMS_PER_PAGE,
+                skip : page * config.GALLERY.ITEMS_PER_PAGE
+            },
+            function(err, docs) {
+                docs.toArray(function(err, docs) {
+                    if(typeof callback === 'function') callback(docs);
+                });
+            }
+        );
+    });
+};
+
+Db.prototype.getCommonData = function(callback) {
+    this.connect(function(db) {
+        var collection = db.collection('userSettings');
+
+        collection.findOne({'title' : 'lastUpdateTime'}, function(err, doc) {
+            var data = {
+                lastUpdateTime : doc
+            }
+
+            if(typeof callback === 'function') callback(data);
+        });
+    });
+};
+
 module.exports = Db;

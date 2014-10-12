@@ -23,7 +23,7 @@ var deploy = {
             this.fetchDataFromFlickr(flickr, function() {
                 if(config.CREATE_JSON_FILE) {
                     this.saveGalleryList();
-                    //_this.saveGaleryPages();
+                    this.saveGaleryPages();
                 }
 
                 if(config.SAVE_TO_DB) {
@@ -33,10 +33,6 @@ var deploy = {
                 res.send(flickrData);
             }.bind(this));
         }.bind(this));
-    },
-
-    flickErrorHandler : function(error) {
-        console.log(error.message);
     },
 
     fetchDataFromFlickr :function(flickr, callback) {

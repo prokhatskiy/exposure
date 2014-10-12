@@ -2,12 +2,13 @@ module.exports = function() {
     return {
         TITLE : 'Exposure',
 
-        CREATE_JSON_FILE : false,
+        CREATE_JSON_FILE : true,
         SAVE_TO_DB : true,
+        GET_FROM_DB : true,
 
         ROUTES : {
             INDEX : '/',
-            GALLERY_API : '/services/gallery/*',
+            GALLERY_API : '/services/gallery/:page',
             DEPLOY_API : '/deploy'
         },
 

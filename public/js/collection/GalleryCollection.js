@@ -16,11 +16,11 @@ define(['jquery',
         },
 
         update: function() {
-            var page = this.page++;
-
-            helper.getCachedData(this.url + '/gallery-' + page + '.json', function(data){
+            helper.getCachedData(this.url(this.page), function(data){
                 this.add(data);
             }, this);
+
+            this.page++;
 
             return this;
         }
