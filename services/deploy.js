@@ -23,7 +23,7 @@ var deploy = {
             this.fetchDataFromFlickr(flickr, function() {
                 if(config.CREATE_JSON_FILE) {
                     this.saveGalleryList();
-                    this.saveGaleryPages();
+                    this.saveGalleryPages();
                 }
 
                 if(config.SAVE_TO_DB) {
@@ -86,13 +86,33 @@ var deploy = {
 
     fetchPhotos : function(flickr, callback) {
         flickrData.allPhotos = [];
+        flickrData.allPhotoInfo = [];
 
         flickrData.photosetPages.forEach(function(photoset) {
             flickrData.allPhotos = _.union(flickrData.allPhotos, photoset.photo);
         });
 
-        if(typeof callback === 'function') {
-            callback();
+        if(flickrData.allPhotos.length > 0) {
+            getPhotosInfo(flickrData.allPhotos[0]['id']);
+            var i = 0;
+        }
+
+        function getPhotosInfo(photoId) {
+            flickr.photos.getInfo({
+                photo_id : photoId,
+                format : 'json'
+            }, function(err, result) {
+                flickrData.allPhotoInfo.push(result.photo);
+                i++;
+                if(i < flickrData.allPhotos.length) {
+                    getPhotosInfo(flickrData.allPhotos[i]['id']);
+                }
+                else {
+                    if(typeof callback === 'function') {
+                        callback();
+                    }
+                }
+            });
         }
     },
 
@@ -120,8 +140,58 @@ var deploy = {
         }
     },
 
-    saveGaleryPages : function() {
+    saveGalleryPages : function() {
+        var items = flickrData.photosetPages,
+            json = {},
+            path = config.PAGE.FOLDER_PATH + '/' + config.PAGE.FOLDER_NAME;
 
+        wrench.rmdirSyncRecursive(path);
+        wrench.mkdirSyncRecursive(path);
+
+        for(var i = 0; i < items.length; i++) {
+            json = this.mapGalleryPage(items[i]);
+            fs.writeFile(path + '/' + config.PAGE.FILE_PREFIX + items[i].id + '.json', JSON.stringify(json));
+        }
+    },
+
+    mapGalleryPage : function(flickrObj) {
+        var photosetObj = _.where(flickrData.photosets, {'id' : flickrObj.id })[0];
+
+        var result =  {
+            type : 'galleryPage',
+            pageId : flickrObj.id,
+            title :flickrObj.title,
+            totalPhotos : flickrObj.total,
+            description : photosetObj.description._content,
+            date_create : photosetObj.date_create,
+            date_update : photosetObj.date_update,
+            primary : {
+                'small'  :  this.getPhotoSrc(flickrObj.primary, 'c'),
+                'medium' : this.getPhotoSrc(flickrObj.primary, 'b'),
+                'large'  : this.getPhotoSrc(flickrObj.primary, 'o')
+            },
+            photos : []
+        };
+
+        for(i = 0; i < flickrObj.photo.length; i++) {
+            var photoObj = _.where(flickrData.allPhotoInfo, {'id' : flickrObj.photo[i].id })[0];
+
+            result.photos.push({
+                id : flickrObj.photo[i].id,
+                title : flickrObj.photo[i].title,
+                isprimary : !!parseInt(flickrObj.photo[i].isprimary),
+                description : photoObj.description._content,
+                flickrUrl : photoObj.urls.url[0]._content,
+                tags : photoObj.tags,
+                src : {
+                    'small'  :  this.getPhotoSrc(flickrObj.photo[i].id, 'c'),
+                    'medium' : this.getPhotoSrc(flickrObj.photo[i].id, 'b'),
+                    'large'  : this.getPhotoSrc(flickrObj.photo[i].id, 'o')
+                }
+            });
+        }
+
+        return result;
     },
 
     mapGalleryItemData : function(flickrObj) {
@@ -140,9 +210,9 @@ var deploy = {
     getPrimaryPhotos : function(galleryId) {
         var photoId = _.where(flickrData.photosetPages, { 'id' : galleryId })[0]['primary'];
         return {
-            'regular' : this.getPhotoSrc(photoId, 'm'),
-            'mobile'  :  this.getPhotoSrc(photoId, 'n'),
-            'retina'  : this.getPhotoSrc(photoId, 'z')
+            'small'  :  this.getPhotoSrc(photoId, 'n'),
+            'medium' : this.getPhotoSrc(photoId, 'm'),
+            'large'  : this.getPhotoSrc(photoId, 'z')
         }
     },
 
@@ -155,13 +225,24 @@ var deploy = {
     updateDb : function() {
         var mongoDB = new Db();
         var galleryJson = [];
+        var pagesJson = [];
 
         for(var i = 0; i < flickrData.photosets.length; i++) {
             galleryJson.push(this.mapGalleryItemData(flickrData.photosets[i]));
         }
 
+        for(var i = 0; i < flickrData.photosetPages.length; i++) {
+            pagesJson.push(this.mapGalleryPage(flickrData.photosetPages[i]));
+        }
+
         mongoDB.connect(function(db) {
             mongoDB.saveGallery(galleryJson, db, function() {
+                mongoDB.setLastUpdateDate(db, function() {
+                    db.close();
+                });
+            });
+
+            mongoDB.saveGalleryPages(pagesJson, db, function() {
                 mongoDB.setLastUpdateDate(db, function() {
                     db.close();
                 });

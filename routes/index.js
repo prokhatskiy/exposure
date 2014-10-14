@@ -43,6 +43,18 @@ if(config.GET_FROM_DB) {
             send404(res);
         }
     });
+
+    router.get(config.ROUTES.PAGE_API, function(req, res) {
+        mongoDB.getPage(req.params.id, function(data) {
+            if(data !== null) {
+                res.send(data);
+                res.end();
+            }
+            else {
+                send404(res);
+            }
+        });
+    });
 }
 
 //get data from flickr API

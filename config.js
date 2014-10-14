@@ -9,7 +9,8 @@ module.exports = function() {
         ROUTES : {
             INDEX : '/',
             GALLERY_API : '/services/gallery/:page',
-            DEPLOY_API : '/deploy'
+            DEPLOY_API : '/deploy',
+            PAGE_API : '/services/page/:id'
         },
 
         DB : {
@@ -37,7 +38,7 @@ module.exports = function() {
 
         PAGE : {
             FOLDER_PATH : 'public/services',
-            FOLDER_NAME : 'gallery',
+            FOLDER_NAME : 'pages',
             FILE_PREFIX : 'page-'
         }
     }

@@ -65,6 +65,22 @@ Db.prototype.getGalleryPages = function(page, callback) {
     });
 };
 
+Db.prototype.getPage = function(id, callback) {
+    this.connect(function(db) {
+        var collection = db.collection('galleryPages');
+
+        collection.findOne(
+            {
+                type : 'galleryPage',
+                pageId: id
+            },
+            function(err, doc) {
+                if(typeof callback === 'function') callback(doc);
+            }
+        );
+    });
+};
+
 Db.prototype.getCommonData = function(callback) {
     this.connect(function(db) {
         var collection = db.collection('userSettings');
