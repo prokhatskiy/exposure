@@ -237,14 +237,10 @@ var deploy = {
 
         mongoDB.connect(function(db) {
             mongoDB.saveGallery(galleryJson, db, function() {
-                mongoDB.setLastUpdateDate(db, function() {
-                    db.close();
-                });
-            });
-
-            mongoDB.saveGalleryPages(pagesJson, db, function() {
-                mongoDB.setLastUpdateDate(db, function() {
-                    db.close();
+                mongoDB.saveGalleryPages(pagesJson, db, function() {
+                    mongoDB.setLastUpdateDate(db, function() {
+                        db.close();
+                    });
                 });
             });
         });

@@ -5,7 +5,11 @@ var assert = require('assert');
 // Connection URL
 var url =  'mongodb://' + config.DB.USER + ':' + config.DB.PASSWORD + '@' + config.DB.SERVER + '/' + config.DB.NAME + config.DB.PARAMS
 
-function Db(flickr) {};
+function Db(callback) {
+    this.connect(function(db) {
+        if(typeof callback === 'function') callback(db).bind(this);
+    });
+};
 
 Db.prototype.connect = function(callback) {
     MongoClient.connect(url, function(err, db) {
@@ -57,6 +61,7 @@ Db.prototype.getGalleryPages = function(page, callback) {
                 skip : page * config.GALLERY.ITEMS_PER_PAGE
             },
             function(err, docs) {
+                db.close();
                 docs.toArray(function(err, docs) {
                     if(typeof callback === 'function') callback(docs);
                 });
@@ -75,6 +80,7 @@ Db.prototype.getPage = function(id, callback) {
                 pageId: id
             },
             function(err, doc) {
+                db.close();
                 if(typeof callback === 'function') callback(doc);
             }
         );
@@ -90,6 +96,7 @@ Db.prototype.getCommonData = function(callback) {
                 lastUpdateTime : doc
             }
 
+            db.close();
             if(typeof callback === 'function') callback(data);
         });
     });
