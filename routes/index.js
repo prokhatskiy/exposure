@@ -1,6 +1,6 @@
 var express = require('express');
 var config = require('../config.js');
-var Deploy = require('../Deploy.js');
+var Deploy = require('../services/FlickrDeploy.js');
 var Db = require('../services/Db.js');
 
 var router = express.Router();

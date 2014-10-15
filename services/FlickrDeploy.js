@@ -1,14 +1,14 @@
 var Flickr = require('flickrapi');
-var config = require('config.js');
+var config = require('../config.js');
 var fs = require('fs');
 var wrench = require('wrench');
 var _ = require('lodash');
-var Db = require('./services/Db.js');
+var Db = require('./Db.js');
 
 var flickrOptions = {
-        api_key: config.FLICKR.KEY,
-        secret: config.FLICKR.SECRET
-    };
+    api_key: config.FLICKR.KEY,
+    secret: config.FLICKR.SECRET
+};
 
 var flickrData = {};
 
@@ -244,7 +244,6 @@ Deploy.prototype.updateDb = function() {
             });
         });
     });
-}
-
+};
 
 module.exports = Deploy;
