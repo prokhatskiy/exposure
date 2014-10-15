@@ -2,7 +2,7 @@ module.exports = function() {
     return {
         TITLE : 'Exposure',
 
-        CREATE_JSON_FILE : true,
+        CREATE_JSON_FILE : false,
         SAVE_TO_DB : true,
         GET_FROM_DB : true,
 

@@ -1,10 +1,9 @@
 var express = require('express');
 var config = require('../config.js');
-var deploy = require('../services/deploy.js');
-var Db = require('../db.js');
+var Deploy = require('../services/Deploy.js');
+var Db = require('../services/Db.js');
 
 var router = express.Router();
-var mongoDB = new Db();
 
 //helper functions
 function send404(res) {
@@ -14,11 +13,15 @@ function send404(res) {
 
 //home page
 router.get(config.ROUTES.INDEX, function(req, res) {
-    mongoDB.getCommonData(function(data) {
-        res.render('index', {
-            title : config.TITLE,
-            useDb : config.GET_FROM_DB || 0,
-            lastUpdateTime : data.lastUpdateTime.value
+    new Db(function(db) {
+        this.getCommonData(db, function(data) {
+            res.render('index', {
+                title : config.TITLE,
+                useDb : config.GET_FROM_DB || 0,
+                lastUpdateTime : data.lastUpdateTime.value
+            });
+
+            db.close();
         });
     });
 });
@@ -29,14 +32,17 @@ if(config.GET_FROM_DB) {
         var page = parseInt(req.params.page);
 
         if(!isNaN(page)) {
-            mongoDB.getGalleryPages(page, function(data) {
-                if(data.length !== 0) {
-                    res.send(data);
-                    res.end();
-                }
-                else {
-                    send404(res);
-                }
+            new Db(function(db) {
+                this.getGalleryPages(db, page, function(data) {
+                    if(data.length !== 0) {
+                        res.send(data);
+                        res.end();
+                    }
+                    else {
+                        send404(res);
+                    }
+                    db.close();
+                });
             });
         }
         else {
@@ -45,21 +51,24 @@ if(config.GET_FROM_DB) {
     });
 
     router.get(config.ROUTES.PAGE_API, function(req, res) {
-        mongoDB.getPage(req.params.id, function(data) {
-            if(data !== null) {
-                res.send(data);
-                res.end();
-            }
-            else {
-                send404(res);
-            }
+        new Db(function(db) {
+            this.getPage(db, req.params.id, function(data) {
+                if(data !== null) {
+                    res.send(data);
+                    res.end();
+                }
+                else {
+                    send404(res);
+                }
+                db.close();
+            });
         });
     });
 }
 
 //get data from flickr API
 router.get(config.ROUTES.DEPLOY_API, function(req, res) {
-    var json = deploy.init(res);
+    var deploy = new Deploy(res);
 });
 
 module.exports = router;
