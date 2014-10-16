@@ -26,7 +26,10 @@ define(['jquery', 'App', 'Events'], function($, App, Events) {
         getCachedData : function(url, onSuccess, context) {
             if(typeof onSuccess !== 'function') return false;
 
-            //TODO: add LS checking
+            if(+localStorage.getItem('cacheTime') < window.app.lastUpsateTime) {
+                localStorage.clear();
+            }
+
             if(localStorage.getItem(url) !== null) {
                 onSuccess.call(context, JSON.parse(localStorage.getItem(url)));
                 return this;
@@ -41,6 +44,10 @@ define(['jquery', 'App', 'Events'], function($, App, Events) {
             }, context);
 
             return this;
+        },
+
+        initModules : function($el) {
+            //TODO: init modules
         }
     };
 

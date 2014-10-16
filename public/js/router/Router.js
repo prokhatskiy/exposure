@@ -5,7 +5,7 @@ define(['underscore', 'backbone', 'Events'], function(_, Backbone, Events) {
 		defaultPath : '/',		
 		routes: {
 			'' : 'gallery',
-			'/page|about|admin\/(:id)' : 'openPage',
+			'gallery/:id' : 'openPage',
 			'*path' : 'default'
 		},
 
@@ -14,11 +14,12 @@ define(['underscore', 'backbone', 'Events'], function(_, Backbone, Events) {
 		},
 
         gallery: function() {
-            Events.trigger('gallery');
+            Events.trigger('gallery:show');
         },
 
-        openPage: function() {
-
+        openPage: function(id) {
+            Events.trigger('gallery:hide');
+            Events.trigger('page:open', 'galleryPage', id);
         }
 	});       
 });

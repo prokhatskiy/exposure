@@ -1,7 +1,7 @@
 define(['jquery',
-        'underscore',
-        'backbone',
-        'text!template/galleryItemTemplate.html'], function($, _, Backbone, galleryItemTemplate) {
+    'underscore',
+    'backbone',
+    'text!template/galleryItemTemplate.html'], function($, _, Backbone, galleryItemTemplate) {
 
     var GalleryItemView = Backbone.View.extend({
         tagName : 'article',

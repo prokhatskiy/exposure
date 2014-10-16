@@ -4,7 +4,9 @@ define(['backbone',
         'router/Router',
         'Events',
         'constants',
-        'view/GalleryView'], function(Backbone, _, $, Router, Events, CONST, GalleryView) {
+        'view/GalleryView',
+        'view/GalleryPageView',
+        'model/GalleryPageModel'], function(Backbone, _, $, Router, Events, CONST, GalleryView, GalleryPageView, GalleryPageModel) {
 
     function App() {
         this.$body = $(document.body);
@@ -56,12 +58,38 @@ define(['backbone',
             this.$body.removeClass(CONST.SELECTORS.LOAD_CLS);
         }.bind(this));
 
-        Events.on('gallery', function() {
+        Events.on('gallery:show', function() {
+            Events.trigger('page:close');
             if(this['gallery'] === undefined) {
                 this.gallery = new GalleryView();
             }
             else {
                 this.gallery.show();
+            }
+        }.bind(this));
+
+        Events.on('gallery:hide', function() {
+            if(this['gallery'] !== undefined) {
+                this.gallery.hide();
+            }
+        }.bind(this));
+
+        Events.on('page:open', function(pageType, id) {
+            if(pageType === 'galleryPage') {
+                var model = new GalleryPageModel({
+                    id : id
+                });
+
+                this.page = new GalleryPageView({
+                    model : model
+                });
+            }
+        }.bind(this));
+
+        Events.on('page:close', function() {
+            if(this['page'] !== undefined) {
+                this.page.remove();
+                delete this.page;
             }
         }.bind(this));
     };
