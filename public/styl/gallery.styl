@@ -1,0 +1,34 @@
+gutter = 35px
+item-width = 469px
+
+.gallery
+    width: item-width*2 + gutter*2
+    margin: 0 auto 50px
+    font-size: 0
+
+    &__item
+        display: inline-block
+        vertical-align: top
+        width: item-width
+        position: relative
+        margin: gutter 0
+        font-size: 18px
+        text-align: center
+
+        &:nth-child(2n)
+            margin-left: gutter
+
+        &:nth-child(2n+1)
+            margin-right: gutter
+
+    &__image
+        margin: 0
+
+    &__image-src
+        display: block
+        width: 100%
+        margin-bottom: 15px
+
+    &__link
+        text-decoration: none
+        color: #222

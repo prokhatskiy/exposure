@@ -7,6 +7,8 @@ module.exports = function(grunt) {
     grunt.initConfig({
         stylus: {
             compile: {
+                use: ['rupture'],
+                import: ['public/styl/vars.styl'],
                 files: {
                     'public/css/styles.css' : ['public/styl/styles.styl' ]
                 },
@@ -56,11 +58,6 @@ module.exports = function(grunt) {
                 }
             }
         },
-        open : {
-            dev : {
-                path : 'http://localhost:' + APP_PORT
-            }
-        },
         copy : {
             lib : {
                 files : [{
@@ -77,7 +74,6 @@ module.exports = function(grunt) {
         }
     });
 
-    grunt.loadNpmTasks('grunt-open');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-autoprefixer');
     grunt.loadNpmTasks('grunt-contrib-stylus');
@@ -85,7 +81,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-shell');
     grunt.loadNpmTasks('grunt-contrib-copy');
 
-    grunt.registerTask('styles', ['open:dev', 'stylus', 'autoprefixer:css', 'watch:stylus']);
+    grunt.registerTask('styles', ['stylus', 'autoprefixer:css', 'watch:stylus']);
     grunt.registerTask('server', ['express']);
 
 };
